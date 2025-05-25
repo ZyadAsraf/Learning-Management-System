@@ -9,6 +9,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentAssignmentsController;
 use App\Http\Controllers\StudentSubmissionController;
+use App\Http\Controllers\CourseViewController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -49,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/courses/{course}', [CourseController::class, 'show']);
     Route::put('/courses/{course}', [CourseController::class, 'update']);
     Route::delete('/courses/{course}', [CourseController::class, 'destroy']);
+    Route::get('/student/courses', [CourseViewController::class, 'studentCoursesWithAssignments']);
 
         Route::get('/student/course/{course}/assignments', [StudentAssignmentsController::class, 'courseAssignments']);
         Route::post('/student/assignments/{assignment}/submit', [StudentSubmissionController::class, 'store']);
