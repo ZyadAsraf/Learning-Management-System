@@ -14,12 +14,13 @@ class MaterialController extends Controller
     }
 
     public function store(Request $request)
-    {
+{
+    try {
         $request->validate([
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'file' => 'nullable|file|mimes:pdf,mp4,mov,avi,wmv|max:51200', // max 50MB
+            'file' => 'nullable|file|mimes:pdf,mp4,mov,avi,wmv|max:51200',
         ]);
 
         $filePath = null;
@@ -42,7 +43,11 @@ class MaterialController extends Controller
         ]);
 
         return response()->json($material, 201);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Server Error: ' . $e->getMessage()], 500);
     }
+}
+
 
     public function show(Material $material)
     {

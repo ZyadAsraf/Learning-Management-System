@@ -20,8 +20,8 @@ if (user?.role_id === 1) {
 } else if (user?.role_id === 2) {
     // Teacher
     links = [
-        { name: 'Grade', route: 'grade' },
-        { name: 'Upload Material', route: 'teacher.materials.upload' }
+       // { name: 'Grade', route: 'grade' },
+{ name: 'Upload Material', route: 'teacher.materials.upload' }
     ];
 } else if (user?.role_id === 3) {
     // Student
