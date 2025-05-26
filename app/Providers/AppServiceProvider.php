@@ -27,5 +27,12 @@ class AppServiceProvider extends ServiceProvider
        return $user->role && $user->role->name == "admin";
         });
             Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+                Gate::define('view-student-dashboard', function (User $user) {
+       return $user->role && $user->role->name == "student";
+        });
+        
+        Gate::define('view-teacher-dashboard', function (User $user) {
+       return $user->role && $user->role->name == "teacher";
+        });
     }
 }

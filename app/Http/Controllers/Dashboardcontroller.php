@@ -11,10 +11,17 @@ class Dashboardcontroller extends Controller
 {
 function index(){
          $user = auth()->user()->load('role');
-    if (Gate::denies('view-admin-dashboard',$user)) {
+    if (Gate::allows('view-admin-dashboard',$user)) {
+    return Inertia::render('Dashboard');
+
+    }elseif(Gate::allows('view-student-dashboard',$user)){
+        return Inertia::render('StudentDashboard');
+    }elseif(Gate::allows('view-teacher-dashboard',$user)){
+        return Inertia::render('TeacherDashboard');
+    }
+    else{
         abort(403, 'Unauthorized');
     }
-    return Inertia::render('Dashboard');
 
 }
 function students(){
