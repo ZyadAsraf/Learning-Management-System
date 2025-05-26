@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content')->nullable(); // Optional description or notes
             $table->string('pdf_path')->nullable(); 
+            $table->enum('file_type', ['pdf', 'video'])->nullable();
             $table->timestamps();
         });
         

@@ -15,13 +15,16 @@ if (user?.role_id === 1) {
     links = [
         { name: 'Students', route: 'students' },
         { name: 'Teachers', route: 'teachers' },
+        { name: 'Courses', route: 'courses' },
         { name: 'Enrollments', route: 'enrollments' }
     ];
 } else if (user?.role_id === 2) {
     // Teacher
     links = [
-        { name: 'Grade', route: 'grade' },
-        { name: 'Material', route: 'teachers' } // Adjust the route name if needed
+       // { name: 'Grade', route: 'grade' },
+    { name: 'Upload Material', route: 'teacher.materials.upload' },
+    { name: 'My Assignments', route: 'teacher.assignments.index' }
+
     ];
 } else if (user?.role_id === 3) {
     // Student

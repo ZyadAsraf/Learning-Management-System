@@ -21,7 +21,7 @@ class StudentassignmentsController extends Controller
     }
 
     // Check enrollment by looking into enrollments table with correct foreign keys
-    $isEnrolled = \App\Models\Enrollment::where('course_id', $course->id)
+    $isEnrolled = Enrollment::where('course_id', $course->id)
                 ->where('student_id', $user->id)
                 ->exists();
 

@@ -18,6 +18,7 @@ class CourseController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'teacher_id' => 'required|exists:users,id',
+            'is_public' => 'nullable|boolean',
         ]);
 
         $course = Course::create($request->all());
@@ -36,6 +37,7 @@ class CourseController extends Controller
             'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'teacher_id' => 'sometimes|required|exists:users,id',
+            'is_public'=> 'nullable|boolean',
         ]);
 
         $course->update($request->all());
@@ -48,4 +50,13 @@ class CourseController extends Controller
         $course->delete();
         return response()->json(['message' => 'Course deleted successfully']);
     }
+
+    public function teacherCourses(Request $request)
+{
+    $teacherId = $request->user()->id;
+
+    $courses = Course::where('teacher_id', $teacherId)->get();
+
+    return response()->json($courses);
+}
 }

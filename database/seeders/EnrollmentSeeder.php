@@ -1,5 +1,6 @@
 <?php
 namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\Models\Enrollment;
 use App\Models\User;
@@ -13,7 +14,7 @@ class EnrollmentSeeder extends Seeder
         $students = User::whereHas('role', fn($q) => $q->where('name', 'student'))->get();
 
         foreach ($students as $student) {
-            Enrollment::create([
+            Enrollment::firstOrCreate([
                 'course_id' => $course->id,
                 'student_id' => $student->id,
             ]);
