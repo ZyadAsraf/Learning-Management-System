@@ -23,7 +23,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/students', [DashboardController::class, 'students'])->name('students');
     
     Route::get('/teachers', [DashboardController::class, 'teachers'])->name('teachers');
-    
+    Route::get('/student/course/{id}', function ($id) {
+    return Inertia::render('Studentcourse', [
+        'course_id' => $id,
+    ]);
+})->name('content_course');
     Route::get('/enrollments', [DashboardController::class, 'enrollments'])->name('enrollments');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
