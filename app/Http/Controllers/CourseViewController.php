@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Course;
 
 
 class CourseViewController extends Controller
@@ -63,6 +64,40 @@ class CourseViewController extends Controller
             'complete_assignments_courses_count' => $completeAssignmentsCoursesCount,
             'enrolled_courses_count' => count($courses),
             'courses' => $result,
+        ]);
+    }
+     public function getCourseContent($courseId)
+    {
+        $user = Auth::user();
+
+        $course = Course::with(['materials:id,course_id,title,pdf_path', 'assignments:id,course_id,title,pdf_path,due_date'])
+            ->findOrFail($courseId);
+
+        // Check access:
+        $isStudentEnrolled = $user->role->name === 'student' &&
+            $user->enrollments()->where('course_id', $courseId)->exists();
+
+        $isTeacherOfCourse = $user->role->name === 'teacher' &&
+            $course->teacher_id === $user->id;
+
+        if (!$isStudentEnrolled && !$isTeacherOfCourse) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return response()->json([
+            'course_title' => $course->title,
+            'materials' => $course->materials->map(function ($material) {
+                return [
+                    'title' => $material->title,
+                    'pdf_path' => $material->pdf_path,
+                ];
+            }),
+            'assignments' => $course->assignments->map(function ($assignment) {
+                return [
+                    'title' => $assignment->title,
+                    'due_date' => $assignment->due_date,
+                ];
+            }),
         ]);
     }
 }

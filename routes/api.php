@@ -50,7 +50,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/courses/{course}', [CourseController::class, 'show']);
     Route::put('/courses/{course}', [CourseController::class, 'update']);
     Route::delete('/courses/{course}', [CourseController::class, 'destroy']);
+
     Route::get('/student/courses', [CourseViewController::class, 'studentCoursesWithAssignments']);
+
+    Route::get('/student/{course}/course-content', [CourseViewController::class, 'getCourseContent']);
 
         Route::get('/student/course/{course}/assignments', [StudentAssignmentsController::class, 'courseAssignments']);
         Route::post('/student/assignments/{assignment}/submit', [StudentSubmissionController::class, 'store']);
