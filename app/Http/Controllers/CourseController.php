@@ -50,4 +50,13 @@ class CourseController extends Controller
         $course->delete();
         return response()->json(['message' => 'Course deleted successfully']);
     }
+
+    public function teacherCourses(Request $request)
+{
+    $teacherId = $request->user()->id;
+
+    $courses = Course::where('teacher_id', $teacherId)->get();
+
+    return response()->json($courses);
+}
 }

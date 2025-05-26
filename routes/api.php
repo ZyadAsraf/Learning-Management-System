@@ -10,6 +10,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentAssignmentsController;
 use App\Http\Controllers\StudentSubmissionController;
 use App\Http\Controllers\CourseViewController;
+use App\Http\Controllers\MaterialController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -39,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/teachers', [TeacherUserController::class, 'store']);
     Route::put('/teachers/{user}', [TeacherUserController::class, 'update']);
     Route::delete('/teachers/{user}', [TeacherUserController::class, 'destroy']);
+    Route::get('/teacher/courses', [CourseController::class, 'teacherCourses']);
 
     Route::get('/enrollments', [EnrollmentController::class, 'index']);
     Route::post('/enrollments', [EnrollmentController::class, 'store']);
@@ -59,4 +61,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/student/assignments/{assignment}/submit', [StudentSubmissionController::class, 'store']);
     Route::get('/student/assignments/{assignment}/submission', [StudentSubmissionController::class, 'show']);
     Route::post('/logout', [AuthenticatedSessionController::class, 'apiLogout']);
+
+    // Material routes
+    Route::get('/materials', [MaterialController::class, 'index']);
+    Route::post('/materials', [MaterialController::class, 'store']);
+    Route::get('/materials/{material}', [MaterialController::class, 'show']);
+    Route::put('/materials/{material}', [MaterialController::class, 'update']);
+    Route::delete('/materials/{material}', [MaterialController::class, 'destroy']);
 });

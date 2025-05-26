@@ -21,7 +21,7 @@ if (user?.role_id === 1) {
     // Teacher
     links = [
         { name: 'Grade', route: 'grade' },
-        { name: 'Material', route: 'teachers' } // Adjust the route name if needed
+        { name: 'Upload Material', route: 'teacher.materials.upload' }
     ];
 } else if (user?.role_id === 3) {
     // Student
