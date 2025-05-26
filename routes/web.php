@@ -22,7 +22,7 @@ Route::get('/dashboard',[DashboardController::class, 'index'])->middleware(['aut
 Route::middleware('auth')->group(function () {
    // Route::get('/my-courses',  [DashboardController::class, 'courses'])->name('my-courses');
 
-Route::get('/courses', [DashboardController::class, 'courses'])->name('courses');
+    Route::get('/courses', [DashboardController::class, 'courses'])->name('courses');
 
     Route::get('/students', [DashboardController::class, 'students'])->name('students');
     

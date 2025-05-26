@@ -15,6 +15,7 @@ if (user?.role_id === 1) {
     links = [
         { name: 'Students', route: 'students' },
         { name: 'Teachers', route: 'teachers' },
+        { name: 'Courses', route: 'courses' },
         { name: 'Enrollments', route: 'enrollments' }
     ];
 } else if (user?.role_id === 2) {
