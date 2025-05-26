@@ -23,7 +23,8 @@ if (user?.role_id === 1) {
     links = [
        // { name: 'Grade', route: 'grade' },
     { name: 'Upload Material', route: 'teacher.materials.upload' },
-    { name: 'My Assignments', route: 'teacher.assignments.index' }
+    { name: 'My Assignments', route: 'teacher.assignments.index' },
+    { name: 'Grading Submissions', route: 'teacher.submissions.index' }
 
     ];
 } else if (user?.role_id === 3) {

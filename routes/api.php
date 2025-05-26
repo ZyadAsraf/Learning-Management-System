@@ -13,6 +13,7 @@ use App\Http\Controllers\CourseViewController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\AssignmentController;
 
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -76,4 +77,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/assignments/{assignment}', [AssignmentController::class, 'destroy']);
     Route::get('/assignments', [AssignmentController::class, 'index']); // optional
     Route::get('/assignments/{assignment}', [AssignmentController::class, 'show']);
+
+
+    Route::get('/grading-submissions', [StudentSubmissionController::class, 'index']);
+    Route::post('/grading-submissions', [StudentSubmissionController::class, 'store']);
+    Route::get('/grading-submissions/{id}', [StudentSubmissionController::class, 'show']);
+    Route::put('/grading-submissions/{id}', [StudentSubmissionController::class, 'update']);
+    Route::delete('/grading-submissions/{id}', [StudentSubmissionController::class, 'destroy']);
+
+
 });

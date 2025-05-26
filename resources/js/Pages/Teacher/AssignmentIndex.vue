@@ -2,19 +2,20 @@
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="text-2xl font-semibold">My Assignments</h2>
+      <div class="flex items-center justify-between">
+        <h2 class="text-3xl font-bold text-gray-800">My Assignments</h2>
+        <Link
+          :href="route('teacher.assignments.create')"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition duration-200"
+        >
+          + New Assignment
+        </Link>
+      </div>
     </template>
 
     <div class="mt-6">
-      <Link
-        :href="route('teacher.assignments.create')"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
-      >
-        Create Assignment
-      </Link>
-
-      <table class="w-full mt-6 border">
-        <thead class="bg-gray-100">
+      <table class="w-full border rounded overflow-hidden shadow">
+        <thead class="bg-gray-100 text-left">
           <tr>
             <th class="border px-4 py-2">Title</th>
             <th class="border px-4 py-2">Course</th>
@@ -25,7 +26,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="assignment in assignments" :key="assignment.id">
+          <tr v-for="assignment in assignments" :key="assignment.id" class="hover:bg-gray-50">
             <td class="border px-4 py-2">{{ assignment.title }}</td>
             <td class="border px-4 py-2">{{ assignment.course.title }}</td>
             <td class="border px-4 py-2">{{ assignment.due_date }}</td>
@@ -54,8 +55,18 @@
               </ul>
             </td>
             <td class="border px-4 py-2">
-              <Link :href="route('teacher.assignments.edit', assignment.id)" class="text-yellow-600 hover:underline mr-2">Edit</Link>
-              <Link :href="route('teacher.assignments.delete', assignment.id)" class="text-red-600 hover:underline">Delete</Link>
+              <Link
+                :href="route('teacher.assignments.edit', assignment.id)"
+                class="text-yellow-600 hover:underline mr-2"
+              >
+                Edit
+              </Link>
+              <Link
+                :href="route('teacher.assignments.delete', assignment.id)"
+                class="text-red-600 hover:underline"
+              >
+                Delete
+              </Link>
             </td>
           </tr>
         </tbody>
