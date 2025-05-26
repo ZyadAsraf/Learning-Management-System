@@ -1,5 +1,6 @@
 <!-- CourseContent.vue -->
 <template>
+    <<<<<<< HEAD
     <div class="course-page p-8 bg-gray-100 min-h-screen">
         <div class="max-w-4xl mx-auto">
             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -176,6 +177,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import axios from "axios";
 import { router } from "@inertiajs/vue3";
@@ -279,6 +281,134 @@ export default {
                     assignment: assignmentId,
                 })
             );
+        },
+    },
+
+    name: "CourseContent",
+    props: {
+        course_id: {
+            type: [String, Number],
+            required: true,
+        },
+    },
+    data() {
+        return {
+            course: {
+                title: "",
+            },
+            materials: [],
+            assignments: [],
+            loading: true,
+            error: null,
+        };
+    },
+    mounted() {
+        this.fetchCourseData();
+    },
+    methods: {
+        async fetchCourseData() {
+            this.loading = true;
+            this.error = null;
+            try {
+                const token = localStorage.getItem("token");
+                if (token) {
+                    axios.defaults.headers.common[
+                        "Authorization"
+                    ] = `Bearer ${token}`;
+                }
+
+                const response = await axios.get(
+                    `/api/student/${this.course_id}/course-content`
+                );
+                const data = response.data;
+
+                this.course.title = data.course_title;
+                this.materials = data.materials.map((m, index) => ({
+                    id: m.id || index, // Ensure each material has an ID
+                    title: m.title,
+                    pdf_path: m.pdf_path,
+                }));
+                this.assignments = data.assignments.map((a) => ({
+                    id: a.id,
+                    title: a.title,
+                    pdf_path: a.pdf_path,
+                    due_date: a.due_date,
+                }));
+            } catch (error) {
+                console.error("Error loading course data:", error);
+                if (error.response) {
+                    if (error.response.status === 403) {
+                        this.error =
+                            "You are not authorized to view this course.";
+                    } else if (error.response.status === 404) {
+                        this.error = "Course not found.";
+                    } else {
+                        this.error =
+                            error.response.data?.error ||
+                            "Failed to connect to the server. Please try again.";
+                    }
+                } else {
+                    this.error =
+                        "Failed to connect to the server. Please try again.";
+                }
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        download(path) {
+            if (!path) {
+                alert("Invalid PDF path.");
+                return;
+            }
+            window.open(path, "_blank");
+        },
+
+        formatDate(date) {
+            if (!date) return "No due date";
+            try {
+                return new Date(date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                });
+            } catch (e) {
+                return "Invalid date";
+            }
+        },
+
+        goToContent(assignmentId) {
+            window.location.href = `/student/assignment/${assignmentId}`;
+        },
+
+        goToContentMaterial(materialId) {
+            if (materialId) {
+                window.location.href = `/student/materials/${materialId}`;
+            }
+        },
+
+        viewMaterial(materialId) {
+            if (materialId) {
+                this.$router.push({
+                    name: "MaterialView",
+                    params: {
+                        course_id: this.course_id,
+                        material_id: materialId,
+                    },
+                });
+            }
+        },
+
+        viewAssignment(assignmentId) {
+            if (assignmentId) {
+                this.$router.push({
+                    name: "AssignmentView",
+                    params: {
+                        course_id: this.course_id,
+                        assignment_id: assignmentId,
+                    },
+                });
+            }
         },
     },
 };

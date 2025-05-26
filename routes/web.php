@@ -47,6 +47,12 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Teacher/UploadMaterial');
     })->name('teacher.materials.upload');
 
+    Route::get('/student/materials/{id}', function ($id) {
+        return Inertia::render('Material', [
+            'material_id' => $id,
+        ]);
+    })->name('Material');
+
     // Teacher Assignments routes
     Route::get('/teacher/assignments', fn() => Inertia::render('Teacher/AssignmentIndex'))->name('teacher.assignments.index');
     Route::get('/teacher/assignments/create', fn() => Inertia::render('Teacher/CreateAssignment'))->name('teacher.assignments.create');
