@@ -13,7 +13,7 @@ class Material extends Model
         'course_id',
         'title',
         'content',
-        'file_path',
+        'pdf_path',
         'file_type',
     ];
 

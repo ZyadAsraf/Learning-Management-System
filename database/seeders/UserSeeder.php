@@ -22,6 +22,14 @@ class UserSeeder extends Seeder
                 'role_id' => $adminRole,
             ]
         );
+                User::firstOrCreate(
+            ['email' => 'elfannan@me.com'],
+            [
+                'name' => 'Elfannan Alex',
+                'password' => Hash::make('password'),
+                'role_id' => $adminRole,
+            ]
+        );
 
         User::firstOrCreate(
             ['email' => 'teacher1@example.com'],
