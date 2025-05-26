@@ -184,18 +184,19 @@
                     </span>
                     
                     <!-- Action Button -->
-                    <button 
-                      @click="handleCourseAction(course, getProgressPercentage(course) === 100 ? 'review' : 'continue')"
-                      class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
-                    >
-                      <svg v-if="getProgressPercentage(course) === 100" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                      </svg>
-                      <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                      {{ getProgressPercentage(course) === 100 ? 'Review' : 'Continue' }}
-                    </button>
+<!-- Replace the existing button in your course card with this -->
+<button 
+  @click="goToCourseContent(course.id)"
+  class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
+>
+  <svg v-if="getProgressPercentage(course) === 100" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+  </svg>
+  <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+  </svg>
+  {{ getProgressPercentage(course) === 100 ? 'Review' : 'Continue' }}
+</button>
                   </div>
                 </div>
               </div>
@@ -263,6 +264,7 @@
 import { ref, computed, onMounted } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import axios from 'axios';
+import { Inertia } from '@inertiajs/inertia';
 
 const courses = ref([]);
 const loading = ref(true);
@@ -395,7 +397,9 @@ const handleClickOutside = (event) => {
     activeCourseMenu.value = null;
   }
 };
-
+const goToCourseContent = (courseId) => {
+  window.location.href = `/student/course/${courseId}`;
+};
 onMounted(() => {
   loadCourses();
   document.addEventListener('click', handleClickOutside);
