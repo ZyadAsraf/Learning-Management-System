@@ -118,7 +118,6 @@ const courses = ref([]);
 const materials = ref([]);
 const teacherName = ref('Teacher');
 
-// 🔐 Get token from localStorage
 const token = localStorage.getItem('token');
 
 const authHeaders = {
@@ -145,7 +144,7 @@ const init = async () => {
 
     courses.value = coursesRes.data || [];
     materials.value = materialsRes.data || [];
-    teacherName.value = 'Instructor'; // Update if teacher name is returned
+    teacherName.value = 'Instructor'; // You can update this if API returns teacher name
   } catch (err) {
     console.error(err);
     error.value = err.response?.data?.message || 'Failed to fetch data';
@@ -155,7 +154,15 @@ const init = async () => {
 };
 
 const handleFileChange = (e) => {
-  form.value.file = e.target.files[0];
+  const file = e.target.files[0];
+  // Optional: Validate file type here on frontend
+  if (file && !['application/pdf', 'video/mp4', 'video/avi', 'video/mov', 'video/wmv'].some(type => file.type.includes(type))) {
+    alert('Only PDF or video files are allowed.');
+    e.target.value = null; // Reset file input
+    form.value.file = null;
+    return;
+  }
+  form.value.file = file;
 };
 
 const handleSubmit = async () => {
@@ -183,9 +190,13 @@ const handleSubmit = async () => {
     materials.value.push(res.data);
     alert('Material uploaded successfully!');
     form.value = { course_id: '', title: '', content: '', file: null };
+
+    // Clear file input manually
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) fileInput.value = null;
   } catch (err) {
     console.error('Upload error', err);
-    alert('Upload failed. Please check your input.');
+    alert(err.response?.data?.message || 'Upload failed. Please check your input.');
   } finally {
     isSubmitting.value = false;
   }
