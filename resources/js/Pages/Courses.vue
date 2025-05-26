@@ -41,7 +41,7 @@
             <p class="text-gray-600 mb-2 flex-grow">{{ course.description }}</p>
             <span class="text-sm text-gray-500 mb-1">Visibility: {{ course.is_public ? 'Public' : 'Private' }}</span>
             <div class="flex justify-between items-center mt-4">
-              <span class="text-sm text-gray-500">Teacher: {{ course.teacher?.name || 'N/A' }}</span>
+              <span class="text-sm text-gray-500">Teacher: {{ course.teacher.name || 'N/A' }}</span>
               <div class="flex gap-2">
                 <button @click="openModal('edit', course)" class="px-3 py-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-600 rounded shadow">Edit</button>
                 <button @click="openModal('delete', course)" class="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-600 rounded shadow">Delete</button>
@@ -76,7 +76,7 @@
       </div>
 
       <!-- Modal -->
-      <ActionModal
+      <CourseActionModal
         :show="showModal"
         :mode="modalMode"
         :item="selectedCourse"
@@ -91,7 +91,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import ActionModal from '@/components/ActionModal.vue'
+import CourseActionModal from '@/components/CourseActionModal.vue' // updated import
 
 const courses = ref([])
 const loading = ref(true)

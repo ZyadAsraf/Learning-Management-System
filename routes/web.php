@@ -27,10 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/students', [DashboardController::class, 'students'])->name('students');
     
     Route::get('/teachers', [DashboardController::class, 'teachers'])->name('teachers');
-
     
     Route::get('/enrollments', [DashboardController::class, 'enrollments'])->name('enrollments');
-    
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
