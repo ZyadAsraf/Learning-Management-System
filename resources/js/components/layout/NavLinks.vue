@@ -4,12 +4,31 @@ import { Link, usePage } from '@inertiajs/vue3';
 
 const page = usePage();
 
-// Define navigation links as reactive data
-const navLinks = ref([
-    { name: 'Students', route: 'students' },
-    { name: 'Teachers', route: 'teachers' },
-    { name: 'Enrollments', route: 'enrollments' }
-]);
+// Get user from localStorage and parse it
+const user = JSON.parse(localStorage.getItem('user'));
+
+// Role-based navigation
+let links = [];
+
+if (user?.role_id === 1) {
+    // Admin
+    links = [
+        { name: 'Students', route: 'students' },
+        { name: 'Teachers', route: 'teachers' },
+        { name: 'Enrollments', route: 'enrollments' }
+    ];
+} else if (user?.role_id === 2) {
+    // Teacher
+    links = [
+        { name: 'Grade', route: 'grade' },
+        { name: 'Material', route: 'teachers' } // Adjust the route name if needed
+    ];
+} else if (user?.role_id === 3) {
+    // Student
+    links = []; // No links for student
+}
+
+const navLinks = ref(links);
 
 // Check if a link is active based on both URL path and component name
 const isActive = (routeName) => {
@@ -18,6 +37,7 @@ const isActive = (routeName) => {
            page.component === routeName.charAt(0).toUpperCase() + routeName.slice(1);
 };
 </script>
+
 
 <template>
     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
