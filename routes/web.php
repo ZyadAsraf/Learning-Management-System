@@ -37,6 +37,11 @@ Route::middleware('auth')->group(function () {
         'assignment_id' => $id,
     ]);
 })->name('content_assignment');
+  Route::get('/student/Material/{id}', function ($id) {
+    return Inertia::render('material', [
+        'material_id' => $id,
+    ]);
+})->name('content_material');
     Route::get('/enrollments', [DashboardController::class, 'enrollments'])->name('enrollments');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
