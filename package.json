@@ -24,8 +24,12 @@
     },
     "dependencies": {
         "@inertiajs/inertia-vue3": "^0.6.0",
+        "@splinetool/viewer": "^1.9.96",
         "apexcharts": "^4.7.0",
-        "vue3-apexcharts": "^1.8.0"
+        "edu_lms": "file:",
+        "vue-spline": "^0.0.4",
+        "vue3-apexcharts": "^1.8.0",
+        "vue3-spline": "^1.0.0"
     },
     "name": "edu_lms",
     "version": "1.0.0",

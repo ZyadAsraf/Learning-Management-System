@@ -9,7 +9,15 @@ class CourseController extends Controller
 {
     public function index()
     {
-        return Course::with('teacher')->get();
+        try {
+            $courses = Course::with('teacher')->get();
+            return response()->json($courses);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error fetching courses',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function store(Request $request)
