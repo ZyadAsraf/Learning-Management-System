@@ -1,3 +1,4 @@
+<!-- CourseContent.vue -->
 <template>
   <div class="course-page p-8 bg-gray-100 min-h-screen">
     <div class="max-w-4xl mx-auto">
@@ -113,14 +114,15 @@
               <li
                 v-for="assignment in assignments"
                 :key="assignment.title"
-                class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                @click="viewAssignment(assignment.id)"
               >
                 <div>
                   <strong class="text-sm font-medium text-gray-900">{{ assignment.title }}</strong>
                   <span class="text-sm text-gray-500 block">Due: {{ formatDate(assignment.due_date) }}</span>
                 </div>
                 <button
-                  @click="download(assignment.pdf_path)"
+                  @click="goToContent(assignment.id)"
                   class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition flex items-center gap-2"
                 >
                   <svg
@@ -147,7 +149,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -181,7 +182,6 @@ export default {
         const token = localStorage.getItem('token');
         if (token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         
-        // Use the passed course_id prop here
         const response = await axios.get(`/api/student/${this.course_id}/course-content`);
         const data = response.data;
 
@@ -191,6 +191,7 @@ export default {
           pdf_path: m.pdf_path,
         }));
         this.assignments = data.assignments.map((a) => ({
+          id: a.id,
           title: a.title,
           pdf_path: a.pdf_path,
           due_date: a.due_date,
@@ -231,7 +232,18 @@ export default {
         return 'Invalid date';
       }
     },
-  },
+    goToContent(assignmentId) {
+      window.location.href = `/student/assignment/${assignmentId}`;
+    },
+    viewAssignment(assignmentId) {
+      this.$router.push({
+        name: 'AssignmentView',
+        params: {
+          course_id: this.course_id,
+          assignment_id: assignmentId,
+        },
+      });
+    },
+  }, // Added closing brace for methods
 };
-
 </script>
