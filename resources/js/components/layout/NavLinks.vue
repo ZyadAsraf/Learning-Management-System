@@ -22,7 +22,9 @@ if (user?.role_id === 1) {
     // Teacher
     links = [
        // { name: 'Grade', route: 'grade' },
-{ name: 'Upload Material', route: 'teacher.materials.upload' }
+    { name: 'Upload Material', route: 'teacher.materials.upload' },
+    { name: 'My Assignments', route: 'teacher.assignments.index' }
+
     ];
 } else if (user?.role_id === 3) {
     // Student

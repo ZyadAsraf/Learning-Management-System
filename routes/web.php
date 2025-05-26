@@ -42,6 +42,12 @@ Route::middleware('auth')->group(function () {
     return Inertia::render('Teacher/UploadMaterial');
     })->name('teacher.materials.upload');
     
+    // Teacher Assignments routes
+    Route::get('/teacher/assignments', fn () => Inertia::render('Teacher/AssignmentIndex'))->name('teacher.assignments.index');
+    Route::get('/teacher/assignments/create', fn () => Inertia::render('Teacher/CreateAssignment'))->name('teacher.assignments.create');
+    Route::get('/teacher/assignments/{assignment}/edit', fn ($id) => Inertia::render('Teacher/EditAssignment', ['assignment' => \App\Models\Assignment::findOrFail($id)]))->name('teacher.assignments.edit');
+    Route::get('/teacher/assignments/{assignment}/delete', fn ($id) => Inertia::render('Teacher/DeleteAssignment', ['assignment' => \App\Models\Assignment::findOrFail($id)]))->name('teacher.assignments.delete');
+
 });
 
 require __DIR__ . '/auth.php';
