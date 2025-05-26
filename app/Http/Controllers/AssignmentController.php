@@ -16,15 +16,15 @@ class AssignmentController extends Controller
         $assignments = Assignment::with(['course', 'submissions' => function ($query) {
             $query->where('student_id', Auth::id());
         }])
-        ->when(Auth::user()->hasRole('student'), function ($query) {
-            return $query->whereHas('course', function ($q) {
-                $q->whereHas('enrollments', function ($q) {
-                    $q->where('student_id', Auth::id());
+            ->when(Auth::user()->hasRole('student'), function ($query) {
+                return $query->whereHas('course', function ($q) {
+                    $q->whereHas('enrollments', function ($q) {
+                        $q->where('student_id', Auth::id());
+                    });
                 });
-            });
-        })
-        ->latest()
-        ->paginate(10);
+            })
+            ->latest()
+            ->paginate(10);
 
         return Inertia::render('Assignments/Index', [
             'assignments' => $assignments
@@ -137,4 +137,4 @@ class AssignmentController extends Controller
         return redirect()->route('assignments.index')
             ->with('success', 'Assignment deleted successfully.');
     }
-} 
+}

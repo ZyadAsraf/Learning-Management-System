@@ -12,6 +12,7 @@ use App\Http\Controllers\StudentSubmissionController;
 use App\Http\Controllers\CourseViewController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\StudentAssignmentViewController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -35,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/students', [StudentUserController::class, 'store']);
     Route::put('/students/{user}', [StudentUserController::class, 'update']);
     Route::delete('/students/{user}', [StudentUserController::class, 'destroy']);
-    
+
     // Teacher routes
     Route::get('/teachers', [TeacherUserController::class, 'index']);
     Route::post('/teachers', [TeacherUserController::class, 'store']);
@@ -58,9 +59,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/student/{course}/course-content', [CourseViewController::class, 'getCourseContent']);
 
-        Route::get('/student/course/{course}/assignments', [StudentAssignmentsController::class, 'courseAssignments']);
-        Route::post('/student/assignments/{assignment}/submit', [StudentSubmissionController::class, 'store']);
-    Route::get('/student/assignments/{assignment}/submission', [StudentSubmissionController::class, 'show']);
+    Route::get('/student/course/{course}/assignment/{assignment}', [AssignmentController::class, 'show']);
+    Route::get('/student/course/{course}/assignments', [StudentAssignmentsController::class, 'courseAssignments']);
+    // Route::post('/student/assignments/{assignment}/submit', [StudentSubmissionController::class, 'store']);
+    // Route::get('/student/assignments/{assignment}/submission', [StudentSubmissionController::class, 'show']);
+    // Route::post('/student/course/{course}/assignment/{assignment}/submit', [StudentSubmissionController::class, 'store']);
     Route::post('/logout', [AuthenticatedSessionController::class, 'apiLogout']);
 
     // Material routes
@@ -76,4 +79,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/assignments/{assignment}', [AssignmentController::class, 'destroy']);
     Route::get('/assignments', [AssignmentController::class, 'index']); // optional
     Route::get('/assignments/{assignment}', [AssignmentController::class, 'show']);
+
+    // Student Assignment Routes
+    Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
+        Route::get('/student/course/{course}/assignment/{assignment}', [StudentAssignmentViewController::class, 'show']);
+        Route::post('/student/course/{course}/assignment/{assignment}/submit', [StudentAssignmentViewController::class, 'submit']);
+    });
 });

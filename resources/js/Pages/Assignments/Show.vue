@@ -78,9 +78,9 @@ import { ref, computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import InputError from '@/Components/InputError.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import InputLabel from '@/components/InputLabel.vue';
+import InputError from '@/components/InputError.vue';
+import PrimaryButton from '@/components/PrimaryButton.vue';
 
 const props = defineProps({
     assignment: {

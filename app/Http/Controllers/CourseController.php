@@ -16,6 +16,7 @@ class CourseController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:courses',
             'description' => 'nullable|string',
             'teacher_id' => 'required|exists:users,id',
             'is_public' => 'nullable|boolean',
@@ -35,6 +36,7 @@ class CourseController extends Controller
     {
         $request->validate([
             'title' => 'sometimes|required|string|max:255',
+            'code' => 'sometimes|required|string|max:255|unique:courses,code,' . $course->id,
             'description' => 'nullable|string',
             'teacher_id' => 'sometimes|required|exists:users,id',
             'is_public'=> 'nullable|boolean',
@@ -52,11 +54,11 @@ class CourseController extends Controller
     }
 
     public function teacherCourses(Request $request)
-{
-    $teacherId = $request->user()->id;
+    {
+        $teacherId = $request->user()->id;
 
-    $courses = Course::where('teacher_id', $teacherId)->get();
+        $courses = Course::where('teacher_id', $teacherId)->get();
 
-    return response()->json($courses);
-}
+        return response()->json($courses);
+    }
 }
