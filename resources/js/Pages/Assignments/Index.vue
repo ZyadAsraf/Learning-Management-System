@@ -1,3 +1,4 @@
+
 <template>
     <AppLayout title="Assignments">
         <template #header>

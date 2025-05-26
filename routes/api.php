@@ -5,10 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\StudentUserController;
 use App\Http\Controllers\TeacherUserController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentAssignmentsController;
 use App\Http\Controllers\StudentSubmissionController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -50,8 +52,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/courses/{course}', [CourseController::class, 'update']);
     Route::delete('/courses/{course}', [CourseController::class, 'destroy']);
 
-        Route::get('/student/course/{course}/assignments', [StudentAssignmentsController::class, 'courseAssignments']);
-        Route::post('/student/assignments/{assignment}/submit', [StudentSubmissionController::class, 'store']);
+    Route::get('/materials', [MaterialController::class, 'index']);
+    Route::post('/materials', [MaterialController::class, 'store']);
+    Route::get('/materials/{material}', [MaterialController::class, 'show']);
+    Route::put('/materials/{material}', [MaterialController::class, 'update']);
+    Route::delete('/materials/{material}', [MaterialController::class, 'destroy']);
+
+   Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/student/course/{course}/assignments', [StudentAssignmentsController::class, 'courseAssignments']);
+    Route::post('/student/assignments/{assignment}/submit', [StudentSubmissionController::class, 'store']);
     Route::get('/student/assignments/{assignment}/submission', [StudentSubmissionController::class, 'show']);
+});
+
+
+    
     Route::post('/logout', [AuthenticatedSessionController::class, 'apiLogout']);
 });

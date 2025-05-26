@@ -39,6 +39,14 @@
                    :type="field.type || 'text'"
                    class="border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-300" />
           </div>
+
+          <!-- Checkbox for is_public -->
+          <div class="mb-4">
+            <label class="inline-flex items-center">
+              <input type="checkbox" v-model="formData.is_public" class="form-checkbox text-purple-600" />
+              <span class="ml-2 text-gray-700">Is Public</span>
+            </label>
+          </div>
         </div>
         
         <div v-else-if="mode === 'delete'" class="py-2">
@@ -151,47 +159,87 @@ const itemAvatar = computed(() => {
   }
   if (name) {
     const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
-    return initials.slice(0, 2);
+    return initials;
   }
   return '';
 });
 
 const additionalDetails = computed(() => {
-  if (props.item.course && props.item.student) {
-    return {
-      'Course': props.item.course.title,
-      'Category': props.item.course.category,
-      'Duration': props.item.course.duration,
-      'Student': props.item.student.name,
-      'Student Email': props.item.student.email
-    };
+  if (!props.item) return null;
+  const details = {};
+  if (props.item.details) {
+    Object.assign(details, props.item.details);
   }
-  return null;
+  return Object.keys(details).length ? details : null;
 });
 
-const formData = ref({});
+const formData = ref({
+  name: '',
+  email: '',
+  password: '',
+  is_public: false,
+});
 
-watch(() => props.item, (newItem) => {
-  if (props.mode === 'create') {
-    formData.value = {};
-    Object.keys(props.formFields).forEach(key => {
-      formData.value[key] = '';
-    });
-  } else {
-    formData.value = { ...newItem };
-  }
-}, { immediate: true, deep: true });
+// Sync formData with item when mode changes or item changes
+watch(
+  () => [props.mode, props.item],
+  () => {
+    if (props.mode === 'edit' && props.item) {
+      // copy known keys to formData
+      for (const key in formData.value) {
+        if (key in props.item) formData.value[key] = props.item[key];
+        else formData.value[key] = key === 'is_public' ? false : '';
+      }
+      if ('is_public' in props.item) {
+        formData.value.is_public = props.item.is_public;
+      }
+    } else if (props.mode === 'create') {
+      // reset form
+      for (const key in formData.value) formData.value[key] = key === 'is_public' ? false : '';
+    }
+  },
+  { immediate: true }
+);
 
-const closeModal = () => emit('close');
+function closeModal() {
+  emit('close');
+}
 
-const confirmAction = () => {
-  if (props.mode === 'create') emit('confirm', { action: 'create', data: formData.value });
-  else if (props.mode === 'edit') emit('confirm', { action: 'edit', data: formData.value });
-  else if (props.mode === 'delete') emit('confirm', { action: 'delete', id: props.item.id });
-  closeModal();
-};
+function confirmAction() {
+  emit('confirm', { mode: props.mode, data: formData.value });
+}
 
-const handleImageError = (event) => {
-  event.target.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(itemName.value) + '&background=random';
-};
+function handleImageError(event) {
+  event.target.src = '';
+}
 </script>
+
+<style scoped>
+/* checkbox */
+.form-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  border: 1.5px solid #a78bfa; 
+  width: 20px;
+  height: 20px;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.form-checkbox:checked {
+  background-color: #7c3aed; 
+  border-color: #7c3aed;
+}
+
+.form-checkbox:checked::after {
+  content: '✔';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+</style>

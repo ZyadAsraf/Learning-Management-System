@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
+            $table->boolean('is_public')->default(false);
             $table->timestamps();
         });
         

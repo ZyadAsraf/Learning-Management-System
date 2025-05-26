@@ -17,14 +17,6 @@ function index(){
     return Inertia::render('Dashboard');
 
 }
-function courses(){
-         $user = auth()->user()->load('role');
-    if (Gate::denies('view-admin-dashboard',$user)) {
-        abort(403, 'Unauthorized');
-    }
-    return Inertia::render('MyCourses');
-
-}
 function students(){
          $user = auth()->user()->load('role');
     if (Gate::denies('view-admin-dashboard',$user)) {
@@ -46,5 +38,12 @@ function students(){
         }
         return Inertia::render('Enrollments');
     }
+    function courses(){
+         $user = auth()->user()->load('role');
+    if (Gate::denies('view-admin-dashboard',$user)) {
+        abort(403, 'Unauthorized');
+    }
+return Inertia::render('Courses');
 
+}
 }
