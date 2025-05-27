@@ -77,4 +77,36 @@ class StudentSubmissionController extends Controller
             'feedback' => $submission->feedback,
         ]);
     }
+    public function getAssignmentWithGrade($id)
+{
+    $assignment = Assignment::with(['course', 'submissions.student'])->find($id);
+
+    if (!$assignment) {
+        return response()->json(['error' => 'Assignment not found'], 404);
+    }
+
+    // Optional: return only first submission or filter by authenticated student
+    $submission = $assignment->submissions->first();
+
+    return response()->json([
+        'course' => [
+            'title' => $assignment->course->title ?? '',
+            'code' => $assignment->course->code ?? '',
+        ],
+        'assignment' => [
+            'title' => $assignment->title,
+            'description' => $assignment->description,
+            'due_date' => $assignment->due_date,
+            'opened' => $assignment->created_at,
+        ],
+        'submission' => $submission ? [
+            'status' => $submission->grade ? 'Graded' : 'Submitted for grading',
+            'grade' => $submission->grade,
+            'feedback' => $submission->feedback,
+            'student_name' => $submission->student->name ?? '',
+            'lastModified' => $submission->updated_at,
+        ] : null
+    ]);
+}
+
 }

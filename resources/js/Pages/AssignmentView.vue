@@ -255,7 +255,7 @@ export default {
         code: 'CET217-2024-2'
       },
       assignment: {
-        title: 'Assignment 1',
+        title: 'Ass-ignment 1',
         number: 'Assignment 1',
         description: 'Submit the assignment of Lab 1 in PDF file',
         due_date: '',
@@ -298,7 +298,7 @@ export default {
         const token = localStorage.getItem('token');
         if (token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         
-        const response = await axios.get(`/api/student/course/${this.course_id}/assignment/${this.assignment_id}`);
+        const response = await axios.get(`/api/assignments/${this.assignment_id}/submission`);
         const data = response.data;
 
         this.course.title = data.course.title;

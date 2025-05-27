@@ -61,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/student/course/{assignments}/assignments', [StudentAssignmentsController::class, 'courseAssignments']);
         Route::post('/student/assignments/{assignment}/submit', [StudentSubmissionController::class, 'store']);
     Route::get('/student/assignments/{assignment}/submission', [StudentSubmissionController::class, 'show']);
+    Route::get('/assignments/{id}/submission', [StudentSubmissionController::class, 'getAssignmentWithGrade']);
     Route::post('/logout', [AuthenticatedSessionController::class, 'apiLogout']);
 
     // Material routes

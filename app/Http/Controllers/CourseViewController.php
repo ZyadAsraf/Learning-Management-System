@@ -88,13 +88,13 @@ class CourseViewController extends Controller
         return response()->json([
             'course_title' => $course->title,
             'materials' => $course->materials->map(function ($material) {
-                return [
+                return ['id' => $material->id,
                     'title' => $material->title,
                     'pdf_path' => $material->pdf_path,
                 ];
             }),
             'assignments' => $course->assignments->map(function ($assignment) {
-                return [
+                return ['id' => $assignment->id,
                     'title' => $assignment->title,
                     'due_date' => $assignment->due_date,
                 ];
